@@ -1,0 +1,15 @@
+---
+const posts = Object.entries(import.meta.glob('../pages/blog/*.md', { eager: true }))
+  .map(([path, post]) => ({
+    ...post.frontmatter,
+    url: '/blog/' + path.split('/').at(-1).replace(/\.md$/, '') + '/',
+  }))
+  .sort((a, b) => b.date.localeCompare(a.date));
+---
+{posts.map(post => (
+  <article class="row">
+    <time datetime={post.date}>{new Date(post.date + 'T00:00:00Z').toLocaleDateString('en-US', { dateStyle: 'medium', timeZone: 'UTC' })}</time>
+    <h3><a href={post.url}>{post.title}</a></h3>
+    <p>{post.description}</p>
+  </article>
+))}

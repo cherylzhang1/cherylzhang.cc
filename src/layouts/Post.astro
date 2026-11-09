@@ -1,0 +1,14 @@
+---
+import Site from './Site.astro';
+const { frontmatter: post } = Astro.props;
+---
+<Site title={post.title} description={post.description} section="Blog">
+  <article>
+    <header class="hero">
+      <p class="eyebrow"><a href="/blog/">← BACK TO BLOG</a></p>
+      <h1>{post.title}</h1>
+      <p><time datetime={post.date}>{new Date(post.date + 'T00:00:00Z').toLocaleDateString('en-US', { dateStyle: 'long', timeZone: 'UTC' })}</time></p>
+    </header>
+    <div class="prose"><slot /></div>
+  </article>
+</Site>

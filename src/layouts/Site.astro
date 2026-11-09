@@ -1,0 +1,77 @@
+---
+const { title, description = 'The personal website of Cheryl Zhang.', section = '' } = Astro.props;
+const links = [['Home', '/'], ['Résumé', '/resume/'], ['Blog', '/blog/']];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title === 'Home' ? 'Cheryl Zhang' : title + ' · Cheryl Zhang'}</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="shell">
+      <aside>
+        <a class="identity" href="/"><span class="mark" aria-hidden="true">CZ</span> Cheryl Zhang</a>
+        <p class="aside-label">PERSONAL SITE</p>
+        <nav aria-label="Main navigation">
+          {links.map(([label, url]) => <a href={url} aria-current={section === label ? 'page' : undefined}>{label}</a>)}
+        </nav>
+      </aside>
+      <div class="content">
+        <main id="main"><slot /></main>
+        <footer><span>© {new Date().getUTCFullYear()} Cheryl Zhang</span><a href="https://github.com/cherylzhang1">GitHub ↗</a></footer>
+      </div>
+    </div>
+  </body>
+</html>
+<style is:global>
+  :root { color-scheme: dark; --bg:#191c18; --panel:#222720; --text:#f0efe6; --muted:#b4b8aa; --line:#3c4338; --accent:#cfde9c; }
+  *, *::before, *::after { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font: 1rem/1.65 system-ui,sans-serif; }
+  a { color:inherit; text-underline-offset:.25em; }
+  a:hover { color:var(--accent); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+  .skip { position:absolute; left:1rem; top:1rem; transform:translateY(-200%); background:var(--panel); padding:.5rem 1rem; }
+  .skip:focus { transform:none; z-index:1; }
+  .shell { max-width:77rem; min-height:100svh; margin:auto; display:grid; grid-template-columns:15rem minmax(0,1fr); }
+  aside { border-right:1px solid var(--line); padding:3.25rem 1.5rem; }
+  .identity { display:flex; align-items:center; gap:.75rem; text-decoration:none; font-weight:650; }
+  .mark { display:grid; place-items:center; width:2.5rem; height:2.5rem; border-radius:.65rem; background:var(--accent); color:#22251f; font-family:Georgia,serif; }
+  .aside-label,.eyebrow { color:var(--accent); font: .73rem/1.4 ui-monospace,monospace; letter-spacing:.14em; }
+  .aside-label { margin:3rem 0 .7rem; color:var(--muted); }
+  nav { display:flex; flex-direction:column; gap:.25rem; }
+  nav a { text-decoration:none; padding:.45rem .75rem; border-radius:.4rem; }
+  nav a[aria-current] { color:var(--accent); background:var(--panel); }
+  .content { display:flex; flex-direction:column; min-width:0; padding:0 clamp(1.3rem,6vw,5rem); }
+  main { flex:1; padding:clamp(3rem,8vw,6.5rem) 0 4rem; }
+  h1,h2,h3 { margin:0; line-height:1.08; font-family:Georgia,serif; font-weight:400; }
+  h1 { font-size:clamp(3rem,8vw,6rem); letter-spacing:-.065em; }
+  h2 { font-size:clamp(1.65rem,4vw,2.45rem); letter-spacing:-.035em; }
+  h3 { font-size:1.55rem; }
+  p { color:var(--muted); }
+  .lead { max-width:36rem; font-size:1.18rem; }
+  .hero { border-bottom:1px solid var(--line); padding-bottom:3rem; margin-bottom:2.75rem; }
+  .eyebrow { margin:0 0 1.2rem; }
+  .button { display:inline-block; background:var(--accent); color:#22251f; padding:.55rem 1rem; border-radius:.35rem; text-decoration:none; font-weight:650; }
+  .button:hover { color:#22251f; background:#e0ecb4; }
+  .actions { display:flex; flex-wrap:wrap; align-items:center; gap:1.25rem; margin-top:1.5rem; }
+  .heading { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:1.1rem; }
+  .row { padding:1.15rem 0; border-bottom:1px solid var(--line); }
+  .row p { margin:.4rem 0 0; }
+  .row time,.label { color:var(--accent); font:.76rem ui-monospace,monospace; }
+  .prose { max-width:42rem; }
+  .prose h2 { margin-top:2rem; }
+  footer { border-top:1px solid var(--line); padding:1.15rem 0; display:flex; justify-content:space-between; color:var(--muted); font-size:.85rem; gap:1rem; }
+  @media (max-width: 700px) {
+    .shell { display:block; }
+    aside { border-right:0; border-bottom:1px solid var(--line); padding:1rem 1.3rem; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.6rem; }
+    .aside-label { display:none; }
+    nav { flex-direction:row; flex-wrap:wrap; }
+    nav a { padding:.3rem .55rem; }
+  }
+</style>
